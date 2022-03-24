@@ -1,0 +1,6 @@
+# the executable file
+beamaan_server
+.git
+
+/docker-data/redis-data/*
+/storage/*

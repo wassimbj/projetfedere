@@ -1,0 +1,62 @@
+{"time":"2022-02-19T16:46:43Z","message":"NON 3DS Cards"}
+{"time":"2022-02-19T16:46:43Z","message":"Paid with Success"}
+{"level":"debug","error":"unrecognized descriptor: @everyday","time":"2022-02-20T20:45:37Z","message":"FAILED TO REGISTER TASK"}
+{"time":"2022-02-21T10:22:23Z","message":"NON 3DS Cards"}
+{"time":"2022-02-21T10:22:24Z","message":"Payment is confirmed !"}
+{"level":"debug","time":"2022-02-24T19:41:44Z","message":"Card security code (CVV) mismatch"}
+{"time":"2022-02-26T17:50:18Z","message":"sending confirmation code to: (+966)555575322"}
+{"time":"2022-02-26T17:52:16Z","message":"sending confirmation code to: (+966)555575322"}
+{"time":"2022-02-26T20:58:47Z","message":"sending confirmation code to: (+966)87654321"}
+{"time":"2022-02-26T21:01:38Z","message":"sending confirmation code to: (+966)87654321"}
+{"time":"2022-02-27T06:49:39Z","message":"sending confirmation code to: (+966)771234565"}
+{"time":"2022-02-27T08:49:40Z","message":"sending confirmation code to: (+966)222222220"}
+{"time":"2022-02-27T09:00:18Z","message":"sending confirmation code to: (+966)111111111"}
+{"time":"2022-02-27T09:01:46Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T09:01:48Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T09:01:50Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T09:01:53Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T09:01:58Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T09:02:06Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T09:02:19Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T09:02:40Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T09:03:14Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T10:18:37Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T10:21:35Z","message":"sending confirmation code to: (+966)2222222222222"}
+{"time":"2022-02-27T10:25:59Z","message":"sending confirmation code to: (+966)999999999"}
+{"time":"2022-02-27T10:31:47Z","message":"sending confirmation code to: (+966)888888888"}
+{"time":"2022-03-16T10:26:54Z","message":"sending confirmation code to: (+966)2832767831"}
+{"time":"2022-03-16T10:27:57Z","message":"sending confirmation code to: (+966)7382744769"}
+{"time":"2022-03-16T10:28:10Z","message":"sending confirmation code to: (+966)7265272402"}
+{"time":"2022-03-16T10:36:36Z","message":"sending confirmation code to: (+966)999999992"}
+{"time":"2022-03-16T10:39:31Z","message":"sending confirmation code to: (+966)999999992"}
+{"time":"2022-03-16T10:45:09Z","message":"sending confirmation code to: (+966)999999992"}
+{"time":"2022-03-16T10:50:10Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T10:55:37Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T10:56:46Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:16:46Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:17:46Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:19:34Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:20:13Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:21:03Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:21:58Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:24:03Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:25:14Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:26:14Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:31:33Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:32:28Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:35:05Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:36:59Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:38:21Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:40:58Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:42:54Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-16T11:44:26Z","message":"sending confirmation code to: (+966)2896980272"}
+{"time":"2022-03-20T11:43:41Z","message":"sending confirmation code to: (+966)201234565"}
+{"time":"2022-03-20T11:44:41Z","message":"sending confirmation code to: (+966)201234565"}
+{"time":"2022-03-23T16:35:16Z","message":"Payment is confirmed !"}
+{"time":"2022-03-23T16:36:44Z","message":"Payment is confirmed !"}
+{"time":"2022-03-23T16:43:07Z","message":"Payment is confirmed !"}
+{"time":"2022-03-23T16:53:45Z","message":"Payment is confirmed !"}
+{"time":"2022-03-23T16:57:52Z","message":"Payment is confirmed !"}
+{"time":"2022-03-23T17:10:42Z","message":"Payment is confirmed !"}
+{"time":"2022-03-23T17:13:36Z","message":"Payment is confirmed !"}
+{"time":"2022-03-23T17:15:07Z","message":"Payment is confirmed !"}

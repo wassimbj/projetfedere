@@ -1,0 +1,82 @@
+# For Development
+
+version: "3.6"
+
+services:
+  db:
+    image: postgres:13
+    container_name: pf-db
+    restart: always
+    ports:
+      - 5432:5432
+    env_file: .env
+    volumes:
+      # - ../sql:/docker-entrypoint-initdb.d
+      - app_db:/var/lib/postgresql/data
+    networks:
+      - db_nw1
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: projetfedere
+      POSTGRES_USER: root
+
+  redis:
+    image: redis
+    restart: always
+    volumes:
+      - app_redis:/data
+    command: redis-server
+    ports:
+      - 6379:6379
+    networks:
+      - web_nw1
+
+  app_server:
+    build:
+      context: ./
+      dockerfile: Dockerfile.server
+    ports:
+      - "8989"
+    networks:
+      - db_nw1
+      - web_nw1
+    restart: always
+    volumes:
+      - .:/go/src/app
+    depends_on:
+      - db
+      - redis
+
+  nginx:
+    image: nginx:latest
+    container_name: "pf.nginx"
+    restart: always
+    volumes:
+      - ./cfg/nginx.dev.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8888:80
+      - 443:443
+    networks:
+      - web_nw1
+    depends_on:
+      - app_server
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    networks:
+      - db_nw1
+
+networks:
+  db_nw1:
+    driver: bridge
+  web_nw1:
+    driver: bridge
+
+volumes:
+  app_db:
+  app_redis:

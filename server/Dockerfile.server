@@ -1,0 +1,20 @@
+FROM golang:1.17
+
+ENV ENV="development"
+
+WORKDIR /go/src/app
+
+# copy the needed packges and install them
+COPY go.mod go.sum ./
+RUN go get -d -v ./...
+RUN go install -v ./...
+
+# copy the rest of code and build it
+COPY . .
+
+# CompileDaemon to listen for changes
+RUN go get github.com/githubnemo/CompileDaemon
+# watches .go and .sql files
+CMD CompileDaemon -pattern="(.+\.go|.+\.sql)$" -command="./pfserver" -polling=true
+
+EXPOSE 8989
