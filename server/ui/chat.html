@@ -168,7 +168,6 @@
       const sendBtn = document.getElementById("sendBtn");
       const textArea = document.getElementById("textArea");
       const reconnectingToast = document.getElementById("reconnecting-toast");
-
       let ws = new ReconnectingWebSocket("ws://localhost:7777/ws");
 
       ws.onclose = () => {
