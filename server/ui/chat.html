@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{$myId := .UserId}}
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Chat</title>
+  </head>
+  <body>
+    <div
+      class="
+        flex flex-col flex-auto
+        h-full
+        p-6
+        fixed
+        w-full
+        h-full
+        left-0
+        top-0
+      "
+    >
+      <div
+        class="
+          flex flex-col flex-auto flex-shrink-0
+          rounded-2xl
+          bg-gray-100
+          h-full
+          p-2
+        "
+      >
+        <div class="flex items-center pb-2 border-b border-gray-300">
+          <a
+            href="/"
+            class="
+              text-blue-600
+              rounded-full
+              py-1
+              px-2
+              text-center
+              bg-blue-100
+              w-[100px]
+              hover:bg-blue-200
+              mr-10
+              inline-block
+            "
+          >
+            ⬅️ Go back
+          </a>
+          <span class="rounded-full py-2 px-5 bg-indigo-400 mr-2">A</span>
+          <span>Wassim Ben Jdida</span>
+        </div>
+        <div class="flex flex-col h-full overflow-x-auto mb-4 max-h-[500px]">
+          <div class="flex flex-col h-full">
+            <div class="grid grid-cols-12 gap-y-2">
+              {{range .Messages}}
+              <!-- if im not the sender -->
+              {{if ne $myId .SentFrom}}
+              <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                <div class="flex flex-row items-center">
+                  <div
+                    class="
+                      relative
+                      ml-3
+                      text-sm
+                      bg-white
+                      py-2
+                      px-4
+                      shadow
+                      rounded-xl
+                    "
+                  >
+                    <div>{{.Msg}}</div>
+                  </div>
+                </div>
+              </div>
+              {{else}}
+              <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                <div class="flex items-center justify-start flex-row-reverse">
+                  <div
+                    class="
+                      relative
+                      mr-3
+                      text-sm
+                      bg-indigo-300
+                      py-2
+                      px-4
+                      shadow
+                      rounded-xl
+                    "
+                  >
+                    <div>{{.Msg}}</div>
+                  </div>
+                </div>
+              </div>
+              {{end}} {{end}}
+            </div>
+          </div>
+        </div>
+        <div
+          class="
+            flex flex-row
+            items-center
+            rounded-xl
+            py-2
+            bg-white
+            w-full
+            px-4
+          "
+        >
+          <div class="flex-grow ml-4">
+            <div class="relative w-full">
+              <textarea
+                type="text"
+                rows="2"
+                placeholder="write your message..."
+                id="textArea"
+                class="
+                  flex
+                  w-full
+                  border
+                  rounded-xl
+                  focus:outline-none focus:border-indigo-300
+                  py-2
+                  pl-4
+                "
+              ></textarea>
+            </div>
+          </div>
+          <div class="ml-4">
+            <button
+              id="sendBtn"
+              class="
+                bg-indigo-500
+                hover:bg-indigo-600
+                rounded-full
+                text-white
+                px-4
+                py-2
+                flex-shrink-0
+              "
+            >
+              <span>Send</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const sendBtn = document.getElementById("sendBtn");
+      const textArea = document.getElementById("textArea");
+      const ws = new WebSocket("ws://localhost:7777/ws");
+      ws.onopen = () => {
+        console.log("Connected !");
+      };
+      ws.onerror = (err) => {
+         console.log("WS ERROR: ", err)
+      }
+      // ws.onmessage((e) => {
+      //   console.log("New Message: ", e);
+      // });
+
+      sendBtn.onclick = () => {
+        console.log(textArea.value, textArea.textContent);
+        //   ws.send(textArea.value);
+      };
+    </script>
+  </body>
+</html>

@@ -15,6 +15,6 @@ COPY . .
 # CompileDaemon to listen for changes
 RUN go get github.com/githubnemo/CompileDaemon
 # watches .go and .sql files
-CMD CompileDaemon -pattern="(.+\.go|.+\.sql)$" -command="./pfserver" -polling=true
+CMD CompileDaemon -pattern="(.+\.go|.+\.sql|.+\.html|.+\.css)$" -command="./pfserver" -polling=true
 
 EXPOSE 8989

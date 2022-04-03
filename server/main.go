@@ -15,7 +15,7 @@ func main() {
 	router := routes.Router()
 
 	PORT := config.GetEnv("PORT")
-	fmt.Printf("Server is running, http://localhost:%s", PORT)
 
+	fmt.Printf("Server is running, http://localhost:%s", PORT)
 	log.Fatal(core.StartServer(router, PORT))
 }

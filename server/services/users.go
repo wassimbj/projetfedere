@@ -78,7 +78,7 @@ func (*U) CreateAccount(ctx context.Context, data CreateAccountData) (int64, err
 	err := db.Conn().QueryRow(
 		ctx,
 		`INSERT INTO users(firstname, lastname, email, password)
-		 VALUES($1, $2, $3, $4, $5, $6) RETURNING(id)`,
+		 VALUES($1, $2, $3, $4) RETURNING(id)`,
 		data.FirstName, data.LastName, data.Email, data.Password,
 	).Scan(&newUserId)
 

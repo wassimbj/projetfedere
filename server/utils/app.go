@@ -3,6 +3,7 @@ package utils
 import (
 	"io"
 	"io/ioutil"
+	"path"
 	"path/filepath"
 	"runtime"
 
@@ -27,6 +28,10 @@ func RootPath() string {
 
 	return filepath.Join(basepath, "..") // get out of the /utils dir, which get us the root
 
+}
+
+func TemplatePath(name string) string {
+	return path.Join(RootPath(), "ui/"+name)
 }
 
 func UploadTempFile(file io.Reader, tempFilePattren string, uploadPath string) (string, error) {

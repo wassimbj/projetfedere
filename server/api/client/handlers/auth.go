@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"pfserver/config"
@@ -10,7 +9,6 @@ import (
 	"github.com/jackc/pgx/v4"
 
 	"pfserver/services"
-	"pfserver/utils"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -26,35 +24,18 @@ type SignupData struct {
 	Lastname  string `json:"lastname" validate:"required,max=100,min=3"`
 	Email     string `json:"email" validate:"required,max=250,min=12"`
 	Password  string `json:"password" validate:"required,max=20,min=8"`
-	PhoneCode string `json:"phoneCode" validate:"required,max=5,min=1"` // e.g: +216
 }
 
 func (a *UserAuth) Signup(res http.ResponseWriter, req *http.Request) {
 
-	body, err := core.ReadBody(req.Body)
-	if err != nil {
-		core.Respond(res, core.ResOpts{
-			Status: http.StatusBadRequest,
-			Msg:    "Coudln't read the body",
-		})
-		return
-	}
-	var userInfo SignupData
-	json.Unmarshal([]byte(body), &userInfo)
-
-	// validate the data
-	validationErr := utils.Validator().Struct(userInfo)
-	if validationErr != nil {
-		core.Respond(res, core.ResOpts{
-			Status: http.StatusBadRequest,
-			Msg:    validationErr.Error(),
-		})
-		return
-	}
+	firstname := req.FormValue("firstname")
+	lastname := req.FormValue("lastname")
+	email := req.FormValue("email")
+	password := req.FormValue("password")
 
 	// check if the phone is already registered
 	_, existingUserErr := services.User().GetUserData(req.Context(), services.GetUserBy{
-		Email: userInfo.Email,
+		Email: email,
 	})
 	// exist, _ := services.User().IsUserPhoneExist(req.Context(), userInfo.Phone); exist
 	if existingUserErr != pgx.ErrNoRows && existingUserErr != nil {
@@ -66,7 +47,7 @@ func (a *UserAuth) Signup(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// create user account
-	hashedPass, _ := bcrypt.GenerateFromPassword([]byte(userInfo.Password), 10)
+	hashedPass, _ := bcrypt.GenerateFromPassword([]byte(password), 10)
 	var newUserId int64
 
 	// auto created = created while creating a new transaction
@@ -74,9 +55,9 @@ func (a *UserAuth) Signup(res http.ResponseWriter, req *http.Request) {
 	userId, createErr := services.User().CreateAccount(
 		req.Context(),
 		services.CreateAccountData{
-			FirstName: userInfo.Firstname,
-			LastName:  userInfo.Lastname,
-			Email:     userInfo.Email,
+			FirstName: firstname,
+			LastName:  lastname,
+			Email:     email,
 			Password:  string(hashedPass),
 		},
 	)
@@ -92,13 +73,10 @@ func (a *UserAuth) Signup(res http.ResponseWriter, req *http.Request) {
 	// log the user in (phone is not confirmed yet and identity too)
 	config.NewSession(req, res).Save("user", config.SessData{
 		"id":    newUserId,
-		"email": userInfo.Email,
+		"email": email,
 	})
 
-	core.Respond(res, core.ResOpts{
-		Status: http.StatusCreated,
-		Msg:    "success",
-	})
+	http.Redirect(res, req, "/", http.StatusSeeOther)
 
 }
 
@@ -109,29 +87,21 @@ type LoginData struct {
 
 func (a *UserAuth) Login(res http.ResponseWriter, req *http.Request) {
 
-	body, err := core.ReadBody(req.Body)
-	if err != nil {
-		core.Respond(res, core.ResOpts{
-			Status: http.StatusBadRequest,
-			Msg:    "Bad Request",
-		})
-		return
-	}
-	var loginInfo LoginData
-	json.Unmarshal([]byte(body), &loginInfo)
+	email := req.FormValue("email")
+	password := req.FormValue("password")
 
 	// validate the data
-	validationErr := utils.Validator().Struct(loginInfo)
-	if validationErr != nil {
-		core.Respond(res, core.ResOpts{
-			Status: http.StatusBadRequest,
-			Msg:    validationErr.Error(),
-		})
-		return
-	}
+	// validationErr := utils.Validator().Struct(loginInfo)
+	// if validationErr != nil {
+	// 	core.Respond(res, core.ResOpts{
+	// 		Status: http.StatusBadRequest,
+	// 		Msg:    validationErr.Error(),
+	// 	})
+	// 	return
+	// }
 
 	user, err := services.User().GetUserData(req.Context(), services.GetUserBy{
-		Email: loginInfo.Email,
+		Email: email,
 	})
 
 	// err may happen if no rows are found or something else
@@ -143,7 +113,7 @@ func (a *UserAuth) Login(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	matchFailed := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginInfo.Password))
+	matchFailed := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if matchFailed != nil {
 		core.Respond(res, core.ResOpts{
 			Status: http.StatusUnauthorized,
@@ -161,13 +131,7 @@ func (a *UserAuth) Login(res http.ResponseWriter, req *http.Request) {
 		Id    int64  `json:"id"`
 		Email string `json:"email"`
 	}
-	core.Respond(res, core.ResOpts{
-		Status: http.StatusOK,
-		Msg: LoggedInUserData{
-			Id:    user.Id,
-			Email: user.Email,
-		},
-	})
+	http.Redirect(res, req, "/", http.StatusSeeOther)
 }
 
 func (a *UserAuth) Logout(res http.ResponseWriter, req *http.Request) {

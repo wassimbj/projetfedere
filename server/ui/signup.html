@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./static/styles/sign.css" />
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <div>
+      <dive class="main">
+        <h1 class="sign">Sign Up</h1>
+        <h5>Welcome to our chat APPLICATION</h5>
+        <form action="/api/signup" method="POST" class="form">
+          <div>
+            <p><label for="userNmae">First Name</label></p>
+            <input
+              type="text"
+              id="userName"
+              name="firstname"
+              autocomplete="off"
+              class="un"
+            />
+          </div>
+          <div>
+            <p><label for="userNmae">Last Name</label></p>
+            <input
+              type="text"
+              id="userName"
+              name="lastname"
+              autocomplete="off"
+              class="un"
+            />
+          </div>
+          <div>
+            <p><label for="email">Email Address</label></p>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="em"
+              name="email"
+            />
+          </div>
+          <div>
+            <p><label for="password">Password</label></p>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              class="pass"
+            />
+          </div>
+          <button type="submit" id="btn" class="btn">Sign Up Now</button>
+          <p>Already a member? <a href="/login">Log in</a></p>
+        </form>
+        <div></div>
+      </dive>
+    </div>
+  </body>
+</html>
