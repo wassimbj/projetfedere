@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./static/js/reconnecting-websocket.min.js"></script>
     <title>Chat</title>
   </head>
   <body>
@@ -148,23 +149,55 @@
       </div>
     </div>
 
+    <div
+      id="reconnecting-toast"
+      class="
+        hidden
+        fixed
+        px-10
+        py-2
+        rounded-md
+        shadow-md
+        bg-blue-500
+        text-white
+        top-5
+        left-[45%]
+      "
+    ></div>
     <script>
       const sendBtn = document.getElementById("sendBtn");
       const textArea = document.getElementById("textArea");
-      const ws = new WebSocket("ws://localhost:7777/ws");
-      ws.onopen = () => {
-        console.log("Connected !");
+      const reconnectingToast = document.getElementById("reconnecting-toast");
+
+      let ws = new ReconnectingWebSocket("ws://localhost:7777/ws");
+
+      ws.onclose = () => {
+        reconnectingToast.textContent = "Reconnecting...";
+        reconnectingToast.style.display = "block";
+      };
+
+      ws.onopen = (e) => {
+        console.log("Connected !", e);
+        if (e.isReconnect) {
+          reconnectingToast.textContent = "Connected again !";
+          setTimeout(() => {
+            reconnectingToast.style.display = "none";
+          }, 5000);
+        }
       };
       ws.onerror = (err) => {
-         console.log("WS ERROR: ", err)
-      }
-      // ws.onmessage((e) => {
-      //   console.log("New Message: ", e);
-      // });
+        console.log("WS ERROR: ", err);
+      };
+      ws.onmessage = (e) => {
+        console.log("New Message: ", e);
+      };
 
       sendBtn.onclick = () => {
-        console.log(textArea.value, textArea.textContent);
-        //   ws.send(textArea.value);
+        ws.send(
+          JSON.stringify({
+            msg: textArea.value,
+          })
+        );
       };
     </script>
   </body>

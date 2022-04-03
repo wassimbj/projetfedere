@@ -1,7 +1,6 @@
 package client_routes
 
 import (
-	"fmt"
 	"net/http"
 	"path"
 	"text/template"
@@ -12,9 +11,16 @@ import (
 	"pfserver/utils"
 
 	"github.com/gorilla/mux"
-	"github.com/gorilla/websocket"
 	"github.com/wassimbj/gorl"
 )
+
+// var upgrader = websocket.Upgrader{
+// 	CheckOrigin: func(r *http.Request) bool {
+// 		return true
+// 	},
+// }
+// var clients = make(map[*websocket.Conn]bool) // connected clients
+// var broadcast = make(chan Message)           // broadcast channel
 
 func ClientApiRoutes(router *mux.Router) {
 
@@ -66,31 +72,8 @@ func ClientApiRoutes(router *mux.Router) {
 
 	//!################# chat endpoints #################
 	// Configure the upgrader
-	var upgrader = websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-	}
-	router.HandleFunc("/ws", func(res http.ResponseWriter, req *http.Request) {
-		conn, err1 := upgrader.Upgrade(res, req, nil) // error ignored for sake of simplicity
-		fmt.Println(err1)
 
-		// for {
-		// Read message from browser
-		msgType, msg, err := conn.ReadMessage()
-		if err != nil {
-			return
-		}
-
-		// Print the message to the console
-		fmt.Printf("%s sent: %s\n", conn.RemoteAddr(), string(msg))
-
-		// Write message back to browser
-		if err = conn.WriteMessage(msgType, msg); err != nil {
-			return
-		}
-		// }
-	})
+	router.HandleFunc("/ws", handlers.Chat().Start)
 
 	//!################# auth endpoints #################
 	// signup
