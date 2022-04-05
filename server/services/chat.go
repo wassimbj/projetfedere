@@ -43,9 +43,9 @@ func (C) Get(ctx context.Context, otherPeerId, myId int) ([]*Message, error) {
 	err := pgxscan.Select(ctx, db.Conn(), &data, `
 			SELECT id, sent_from, sent_to, msg, created_at
 			FROM messages
-			WHERE sent_from = $1 OR sent_to = $1
+			WHERE (sent_from = $1 AND sent_to = $2) OR (sent_from = $2 AND sent_to = $1)
 			ORDER BY created_at ASC
-		`, otherPeerId)
+		`, otherPeerId, myId)
 	return data, err
 
 }
