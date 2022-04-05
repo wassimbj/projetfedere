@@ -38,14 +38,14 @@ type Message struct {
 }
 
 // get the messages of the two peers
-func (C) Get(ctx context.Context, userId int) ([]*Message, error) {
+func (C) Get(ctx context.Context, otherPeerId, myId int) ([]*Message, error) {
 	var data []*Message
 	err := pgxscan.Select(ctx, db.Conn(), &data, `
 			SELECT id, sent_from, sent_to, msg, created_at
 			FROM messages
 			WHERE sent_from = $1 OR sent_to = $1
 			ORDER BY created_at ASC
-		`, userId)
+		`, otherPeerId)
 	return data, err
 
 }

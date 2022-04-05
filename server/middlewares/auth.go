@@ -20,17 +20,19 @@ func CheckAuth(f http.HandlerFunc, block bool) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
 		loggedInUser, _ := config.NewSession(req, res).Get("user")
 		isLoggedIn := loggedInUser.Values["id"] != nil
-		fmt.Println(isLoggedIn)
+		fmt.Println("isLoggedIn: ", isLoggedIn)
 		// login and signup routes blocks logged in users
 		// other routes that needs authentication blocks un-auth users
 		// if (block && !isLoggedIn) || (!block && isLoggedIn) {
 		if block && !isLoggedIn {
 			fmt.Println("NOT AUTH 1")
 			http.Redirect(res, req, "/login", http.StatusSeeOther)
+			return
 		} else if !block && isLoggedIn {
 			fmt.Println("NOT AUTH 2")
 			// fmt.Println("PATH: ", req.URL.Path)
 			http.Redirect(res, req, "/", http.StatusSeeOther)
+			return
 		}
 
 		// run the function

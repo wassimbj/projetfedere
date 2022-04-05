@@ -8,6 +8,7 @@ import (
 	"pfserver/db"
 	"pfserver/utils"
 
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/jackc/pgx/v4"
 )
 
@@ -122,4 +123,18 @@ func (*U) UpdateUser(ctx context.Context, userId int64, data UserDataToUpdate) e
 	)
 
 	return err
+}
+
+type UserDetails struct {
+	Id        int    `json:"id"`
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
+}
+
+func (U) GetAllMembers(ctx context.Context, searchQuery string, myId int) ([]*UserDetails, error) {
+	// get the messages of the two peers
+	var data []*UserDetails
+	err := pgxscan.Select(ctx, db.Conn(), &data, `SELECT id, firstname, lastname FROM users WHERE id != $1`, myId)
+	return data, err
+
 }

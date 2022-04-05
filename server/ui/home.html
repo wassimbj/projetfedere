@@ -4,10 +4,158 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@1.4.1/dist/flowbite.min.css"
+    />
     <title>Home</title>
   </head>
   <body>
-    <p>Hello word ! im the home page :)</p>
-    <p> 🥳🥳 You are logged in </p>
+    <header class="py-1 px- bg-white shadow">
+      <nav class="flex items-center justify-around">
+        <div class="font-semibold text-lg">ChatClub</div>
+        <div class="flex item-center">
+          <input
+            class="px-5 bg-gray-100 py-2 rounded-l-md focus:outline-none border"
+            placeholder="Search..."
+          />
+          <button
+            class="px-5 py-2 text-center bg-gray-800 text-white rounded-r-md"
+          >
+            search
+          </button>
+        </div>
+        <div class="relative">
+          <button
+            data-dropdown-toggle="dropdown"
+            class="
+              inline-block
+              bg-blue-100
+              p-3
+              rounded-full
+              cursor-pointer
+              hover:bg-blue-200
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM20.59 22c0-3.87-3.85-7-8.59-7s-8.59 3.13-8.59 7"
+                stroke="currentColor"
+                class="text-blue-600"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </button>
+          <div
+            id="dropdown"
+            class="
+              hidden
+              z-10
+              w-32
+              bg-white
+              rounded
+              divide-y divide-gray-100
+              shadow-lg
+            "
+          >
+            <ul
+              class="py-1 text-sm text-gray-700"
+              aria-labelledby="dropdownDefault"
+            >
+              <li>
+                <a href="#" class="block py-2 px-4 hover:bg-gray-100"
+                  >Settings</a
+                >
+              </li>
+              <li>
+                <a href="/api/logout" class="block py-2 px-4 hover:bg-gray-100">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="container mx-auto my-10">
+      <div class="grid grid-cols-4 gap-x-4 gap-y-3">
+        {{range .Members}}
+        <div>
+          <div class="rounded-md px-2 py-5 bg-gray-900 text-white shadow-md">
+            <img
+              src="https://robohash.org/{{.Firstname}}"
+              class="
+                w-24
+                h-2w-24
+                p-1
+                rounded-full
+                ring-2
+                border border-gray-500
+                mx-auto
+                mb-1
+              "
+            />
+            <span class="block text-center font-semibold text-lg mb-5"
+              >{{.Firstname}} {{.Lastname}}</span
+            >
+
+            <a
+              href="/chat/{{.Id}}"
+              class="
+                w-44
+                mx-auto
+                py-2
+                rounded-full
+                bg-blue-500
+                hover:bg-blue-700
+                flex
+                justify-center
+                items-center
+                text-white text-center
+                font-semibold
+              "
+            >
+              <svg
+                class="mr-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="23"
+                height="23"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M16 2H8C4 2 2 4 2 8v13c0 .55.45 1 1 1h13c4 0 6-2 6-6V8c0-4-2-6-6-6Z"
+                  stroke="currentColor"
+                  class="text-white"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M7 9.5h10M7 14.5h7"
+                  stroke="currentColor"
+                  class="text-white"
+                  stroke-width="1.5"
+                  stroke-miterlimit="10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              <span>Chat now</span>
+            </a>
+          </div>
+        </div>
+        {{end}}
+      </div>
+    </main>
+
+    <script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
   </body>
 </html>

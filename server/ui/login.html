@@ -1,23 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Ubuntu"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Sign in</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-  <link rel="stylesheet" href="./static/styles/css.css">
-  <title>Sign in</title>
-</head>
+  <body>
+    <main class="relative min-h-screen w-full bg-white">
+      <!-- component -->
+      <div class="p-6" x-data="app">
+        <!-- header -->
+        <header class="flex w-full justify-between">
+          <span></span>
+          <!-- buttons -->
+          <div>
+            <a
+              href="/login"
+              type="button"
+              class="
+                rounded-2xl
+                border-b-2 border-b-gray-300
+                bg-white
+                mr-5
+                py-3
+                px-4
+                font-bold
+                text-blue-500
+                ring-2 ring-gray-300
+                hover:bg-gray-200
+                active:translate-y-[0.125rem] active:border-b-gray-200
+              "
+            >
+              LOGIN
+            </a>
 
-<body>
-  <div class="main">
-    <p class="sign" align="center">Log in</p>
-    <form class="form1" method="POST" action="/api/login">
-      <input class="un " name="email" type="text" align="center" placeholder="Email">
-      <input class="pass" name="password" type="password" align="center" placeholder="Password">
-      <button class="submit" type="submit" align="center">Login</button>
-    </div>
-     
-</body>
+            <a
+              href="/signup"
+              type="button"
+              @click="isLoginPage = true"
+              x-show="!isLoginPage"
+              class="
+                rounded-2xl
+                border-b-2 border-b-gray-300
+                bg-white
+                py-3
+                px-4
+                font-bold
+                text-blue-500
+                ring-2 ring-gray-300
+                hover:bg-gray-200
+                active:translate-y-[0.125rem] active:border-b-gray-200
+              "
+            >
+              SIGN UP
+            </a>
+          </div>
+        </header>
 
+        <section
+          class="
+            absolute
+            top-1/2
+            left-1/2
+            mx-auto
+            max-w-sm
+            -translate-x-1/2 -translate-y-1/2
+            transform
+            space-y-4
+            text-center
+          "
+        >
+          <div x-show="!isLoginPage">
+            <form method="POST" action="/api/login" class="space-y-4">
+              <header class="mb-3 text-2xl font-bold">Log in</header>
+              <div
+                class="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200"
+              >
+                <input
+                  type="text"
+                  placeholder="Email"
+                  name="email"
+                  class="
+                    my-3
+                    w-full
+                    border-none
+                    bg-transparent
+                    outline-none
+                    focus:outline-none
+                  "
+                />
+              </div>
+              <div
+                class="
+                  flex
+                  w-full
+                  items-center
+                  space-x-2
+                  rounded-2xl
+                  bg-gray-50
+                  px-4
+                  ring-2 ring-gray-200
+                "
+              >
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  class="
+                    fos:outline-none
+                    my-3
+                    w-full
+                    border-none
+                    bg-transparent
+                    outline-none
+                  "
+                />
+              </div>
+              <button
+                type="submit"
+                class="
+                  w-full
+                  rounded-2xl
+                  border-b-4 border-b-blue-600
+                  bg-blue-500
+                  py-3
+                  font-bold
+                  text-white
+                  hover:bg-blue-400
+                  active:translate-y-[0.125rem] active:border-b-blue-400
+                "
+              >
+                LOG IN
+              </button>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
 </html>

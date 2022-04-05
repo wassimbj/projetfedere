@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="./static/js/reconnecting-websocket.min.js"></script>
+    <script src="/static/js/reconnecting-websocket.min.js"></script>
     <title>Chat</title>
   </head>
   <body>
@@ -49,8 +49,13 @@
           >
             ⬅️ Go back
           </a>
-          <span class="rounded-full py-2 px-5 bg-indigo-400 mr-2">A</span>
-          <span>Wassim Ben Jdida</span>
+          <span class="mr-2">
+            <img
+              src="https://robohash.org/{{.OtherPeer.Firstname}}"
+              class="rounded-full w-10 h-10 border border-gray-400 mx-auto mb-1"
+            />
+          </span>
+          <span>{{.OtherPeer.Firstname}} {{.OtherPeer.Lastname}}</span>
         </div>
         <div class="flex flex-col h-full overflow-x-auto mb-4 max-h-[500px]">
           <div class="flex flex-col h-full">
@@ -168,6 +173,9 @@
       const sendBtn = document.getElementById("sendBtn");
       const textArea = document.getElementById("textArea");
       const reconnectingToast = document.getElementById("reconnecting-toast");
+      const otherPeerId = location.pathname.slice(
+        location.pathname.lastIndexOf("/") + 1
+      );
       let ws = new ReconnectingWebSocket("ws://localhost:7777/ws");
 
       ws.onclose = () => {
@@ -195,6 +203,7 @@
         ws.send(
           JSON.stringify({
             msg: textArea.value,
+            sentTo: Number.parseInt(otherPeerId),
           })
         );
       };

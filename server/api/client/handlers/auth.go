@@ -48,11 +48,11 @@ func (a *UserAuth) Signup(res http.ResponseWriter, req *http.Request) {
 
 	// create user account
 	hashedPass, _ := bcrypt.GenerateFromPassword([]byte(password), 10)
-	var newUserId int64
+	// var newUserId int64
 
 	// auto created = created while creating a new transaction
 	// we will just update the neccessary details
-	userId, createErr := services.User().CreateAccount(
+	_, createErr := services.User().CreateAccount(
 		req.Context(),
 		services.CreateAccountData{
 			FirstName: firstname,
@@ -68,15 +68,15 @@ func (a *UserAuth) Signup(res http.ResponseWriter, req *http.Request) {
 		})
 		return
 	}
-	newUserId = userId
+	// newUserId = userId
 
 	// log the user in (phone is not confirmed yet and identity too)
-	config.NewSession(req, res).Save("user", config.SessData{
-		"id":    newUserId,
-		"email": email,
-	})
+	// config.NewSession(req, res).Save("user", config.SessData{
+	// 	"id":    newUserId,
+	// 	"email": email,
+	// })
 
-	http.Redirect(res, req, "/", http.StatusSeeOther)
+	http.Redirect(res, req, "/login", http.StatusSeeOther)
 
 }
 
@@ -136,20 +136,9 @@ func (a *UserAuth) Login(res http.ResponseWriter, req *http.Request) {
 
 func (a *UserAuth) Logout(res http.ResponseWriter, req *http.Request) {
 
-	err := config.NewSession(req, res).Del("user")
+	config.NewSession(req, res).Del("user")
 
-	if err != nil {
-		core.Respond(res, core.ResOpts{
-			Status: http.StatusInternalServerError,
-			Msg:    "something went wrong",
-		})
-		return
-	}
-
-	core.Respond(res, core.ResOpts{
-		Status: http.StatusOK,
-		Msg:    "Logged out !!",
-	})
+	http.Redirect(res, req, "/", http.StatusSeeOther)
 }
 
 type ConfirmPhoneData struct {
