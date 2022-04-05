@@ -25,7 +25,8 @@ var upgrader = websocket.Upgrader{
 		return true
 	},
 }
-var clients = make(map[*websocket.Conn]bool) // connected clients
+
+var clients = make(map[int]*websocket.Conn) // connected clients
 
 type Message struct {
 	Body   string `json:"msg"`
@@ -34,13 +35,14 @@ type Message struct {
 
 func (C) Start(res http.ResponseWriter, req *http.Request) {
 	ws, err := upgrader.Upgrade(res, req, nil)
-	if err == nil {
-		clients[ws] = true
-	}
 
 	session, _ := config.NewSession(req, res).Get("user")
 	loggedInUser := session.Values
-
+	myId := int(loggedInUser["id"].(int64))
+	if err == nil {
+		clients[int(loggedInUser["id"].(int64))] = ws
+		fmt.Println("Connected: ", loggedInUser["id"])
+	}
 	// go (func() {
 	for {
 		defer ws.Close()
@@ -48,7 +50,7 @@ func (C) Start(res http.ResponseWriter, req *http.Request) {
 		err := ws.ReadJSON(&msg)
 		if err != nil {
 			log.Println("READ ERROR: ", err)
-			delete(clients, ws)
+			delete(clients, myId)
 			return
 		}
 
@@ -63,13 +65,28 @@ func (C) Start(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		for client := range clients {
-			err := client.WriteJSON(msg)
-			if err != nil {
-				log.Printf("error: %v", err)
-				client.Close()
-				delete(clients, client)
+		// send back the message to me
+		if clients[myId] != nil {
+			err1 := clients[myId].WriteJSON(msg)
+			if err1 != nil {
+				log.Printf("error: %v", err1)
+				clients[myId].Close()
+				delete(clients, myId)
 			}
+		} else {
+			fmt.Println(myId, "Not Found !")
+		}
+
+		// send the message to the recipient
+		if clients[msg.SentTo] != nil {
+			err2 := clients[msg.SentTo].WriteJSON(msg)
+			if err2 != nil {
+				log.Printf("error: %v", err2)
+				clients[msg.SentTo].Close()
+				delete(clients, msg.SentTo)
+			}
+		} else {
+			fmt.Println(msg.SentTo, "Not Found !")
 		}
 	}
 	// })()

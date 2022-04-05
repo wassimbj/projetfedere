@@ -38,9 +38,9 @@ func init() {
 		MaxAge:   sessMaxAge,
 		Path:     "/",
 		HttpOnly: true,
-		SameSite: http.SameSiteNoneMode, // for ngrok Set-Cookie
-		// Secure:   IsProd(),
-		Secure: false, // for ngrok Set-Cookie
+		// Secure:   true,
+		// SameSite: http.SameSiteNoneMode, // for ngrok Set-Cookie
+		// Secure:   false,                 // for ngrok Set-Cookie
 	})
 }
 

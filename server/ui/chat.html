@@ -59,7 +59,7 @@
         </div>
         <div class="flex flex-col h-full overflow-x-auto mb-4 max-h-[500px]">
           <div class="flex flex-col h-full">
-            <div class="grid grid-cols-12 gap-y-2">
+            <div class="grid grid-cols-12 gap-y-2" id="messages">
               {{range .Messages}}
               <!-- if im not the sender -->
               {{if ne $myId .SentFrom}}
@@ -172,10 +172,13 @@
     <script>
       const sendBtn = document.getElementById("sendBtn");
       const textArea = document.getElementById("textArea");
+      const messages = document.getElementById("messages");
       const reconnectingToast = document.getElementById("reconnecting-toast");
       const otherPeerId = location.pathname.slice(
         location.pathname.lastIndexOf("/") + 1
       );
+      const myId = Number.parseInt("{{$myId}}");
+
       let ws = new ReconnectingWebSocket("ws://localhost:7777/ws");
 
       ws.onclose = () => {
@@ -196,7 +199,45 @@
         console.log("WS ERROR: ", err);
       };
       ws.onmessage = (e) => {
-        console.log("New Message: ", e);
+        const newMsg = JSON.parse(e.data);
+        messages.insertAdjacentHTML(
+          "beforeend",
+          `${
+            newMsg.sentTo == myId
+              ? `<div class="col-start-1 col-end-8 p-3 rounded-lg">
+                <div class="flex flex-row items-center">
+                <div
+                  class="
+                    relative
+                    ml-3
+                    text-sm
+                    bg-white
+                    py-2
+                    px-4
+                    shadow
+                    rounded-xl">
+                  <div>${newMsg.msg}</div>
+                </div>
+              </div>
+            </div>`
+              : `<div class="col-start-6 col-end-13 p-3 rounded-lg">
+              <div class="flex items-center justify-start flex-row-reverse">
+                <div
+                  class="
+                    relative
+                    mr-3
+                    text-sm
+                    bg-indigo-300
+                    py-2
+                    px-4
+                    shadow
+                    rounded-xl">
+                  <div>${newMsg.msg}</div>
+                </div>
+              </div>
+            </div>`
+          }`
+        );
       };
 
       sendBtn.onclick = () => {
@@ -206,6 +247,29 @@
             sentTo: Number.parseInt(otherPeerId),
           })
         );
+        // messages.insertAdjacentHTML(
+        //   "beforeend",
+        //   `<div class="col-start-6 col-end-13 p-3 rounded-lg">
+        //       <div class="flex items-center justify-start flex-row-reverse">
+        //         <div
+        //           class="
+        //             relative
+        //             mr-3
+        //             text-sm
+        //             bg-indigo-300
+        //             py-2
+        //             px-4
+        //             shadow
+        //             rounded-xl
+        //           "
+        //         >
+        //           <div>${textArea.value}</div>
+        //         </div>
+        //       </div>
+        //     </div>`
+        // );
+        textArea.textContent = "";
+        textArea.value = "";
       };
     </script>
   </body>
