@@ -17,15 +17,25 @@
       <nav class="flex items-center md:justify-around justify-between">
         <div class="font-semibold text-lg"><a href="/">ChatClub</a></div>
         <div class="flex item-center md:block hidden">
-          <input
-            class="px-5 bg-gray-100 py-2 rounded-l-md focus:outline-none border"
-            placeholder="Search..."
-          />
-          <button
-            class="px-5 py-2 text-center bg-gray-800 text-white rounded-r-md"
-          >
-            search
-          </button>
+          <form method="GET" action="/" class="flex item-center">
+            <input
+              name="search"
+              class="
+                px-5
+                bg-gray-100
+                py-2
+                rounded-l-md
+                focus:outline-none
+                border
+              "
+              placeholder="Search..."
+            />
+            <button
+              class="px-5 py-2 text-center bg-gray-800 text-white rounded-r-md"
+            >
+              search
+            </button>
+          </form>
         </div>
         <div class="relative">
           <button
@@ -418,7 +428,7 @@
         </div>
         `
         );
-      } else if(isUpdateSuccess === "false") {
+      } else if (isUpdateSuccess === "false") {
         document.body.insertAdjacentHTML(
           "beforeend",
           `

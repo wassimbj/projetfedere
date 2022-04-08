@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"html"
 	"strings"
 
 	"pfserver/db"
@@ -134,7 +135,11 @@ type UserDetails struct {
 func (U) GetAllMembers(ctx context.Context, searchQuery string, myId int) ([]*UserDetails, error) {
 	// get the messages of the two peers
 	var data []*UserDetails
-	err := pgxscan.Select(ctx, db.Conn(), &data, `SELECT id, firstname, lastname FROM users WHERE id != $1`, myId)
+	cond := ""
+	if searchQuery != "" {
+		cond = "AND firstname LIKE '%" + html.EscapeString(searchQuery) + "%'"
+	}
+	err := pgxscan.Select(ctx, db.Conn(), &data, fmt.Sprintf("SELECT id, firstname, lastname FROM users WHERE id != $1 %s", cond), myId)
 	return data, err
 
 }

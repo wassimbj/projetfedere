@@ -20,9 +20,10 @@ func Users() U {
 func (U) MembersList(res http.ResponseWriter, req *http.Request) {
 	homeTmpl, _ := template.ParseFiles(utils.TemplatePath("home.html"))
 	loggedInUser, _ := config.NewSession(req, res).GetUser()
+	searchQuery := req.URL.Query().Get("search")
 	members, err := services.User().GetAllMembers(
 		req.Context(),
-		"",
+		searchQuery,
 		int(loggedInUser["id"].(int64)),
 	)
 
