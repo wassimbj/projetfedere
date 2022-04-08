@@ -29,8 +29,7 @@ func ClientApiRoutes(router *mux.Router) {
 
 	loginTmpl, _ := template.ParseFiles(utils.TemplatePath("login.html"))
 	signupTmpl, _ := template.ParseFiles(utils.TemplatePath("signup.html"))
-	// homeTmpl, _ := template.ParseFiles(utils.TemplatePath("home.html"))
-	// chatTmpl, _ := template.ParseFiles(utils.TemplatePath("chat.html"))
+	settingsTmpl, _ := template.ParseFiles(utils.TemplatePath("settings.html"))
 
 	router.HandleFunc("/login", middlewares.CheckAuth(func(res http.ResponseWriter, req *http.Request) {
 		loginTmpl.Execute(res, nil)
@@ -39,6 +38,10 @@ func ClientApiRoutes(router *mux.Router) {
 	router.HandleFunc("/signup", middlewares.CheckAuth(func(res http.ResponseWriter, req *http.Request) {
 		signupTmpl.Execute(res, nil)
 	}, false))
+
+	router.HandleFunc("/settings", middlewares.CheckAuth(func(res http.ResponseWriter, req *http.Request) {
+		settingsTmpl.Execute(res, nil)
+	}, true))
 
 	router.HandleFunc("/", middlewares.CheckAuth(handlers.Users().MembersList, true))
 
@@ -71,5 +74,11 @@ func ClientApiRoutes(router *mux.Router) {
 		"/api/me",
 		middlewares.CheckAuth(handlers.Auth().Me, true),
 	).Methods("GET")
+
+	// get logged-in user details
+	router.HandleFunc(
+		"/api/settings",
+		middlewares.CheckAuth(handlers.Users().Settings, true),
+	).Methods("POST")
 
 }
