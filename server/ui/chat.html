@@ -57,7 +57,10 @@
           </span>
           <span>{{.OtherPeer.Firstname}} {{.OtherPeer.Lastname}}</span>
         </div>
-        <div class="flex flex-col h-full overflow-x-auto mb-4 max-h-[500px]">
+        <div
+          class="flex flex-col h-full overflow-x-auto mb-4 h-[500px]"
+          id="chat-wrapper"
+        >
           <div class="flex flex-col h-full">
             <div class="grid grid-cols-12 gap-y-2" id="messages">
               {{range .Messages}}
@@ -173,6 +176,12 @@
       const sendBtn = document.getElementById("sendBtn");
       const textArea = document.getElementById("textArea");
       const messages = document.getElementById("messages");
+      const scrollToBottom = () => {
+        document.getElementById("chat-wrapper").scrollTop =
+          messages.offsetHeight;
+      };
+      scrollToBottom();
+
       const reconnectingToast = document.getElementById("reconnecting-toast");
       const otherPeerId = location.pathname.slice(
         location.pathname.lastIndexOf("/") + 1
@@ -238,6 +247,8 @@
             </div>`
           }`
         );
+
+        scrollToBottom();
       };
 
       sendBtn.onclick = () => {
