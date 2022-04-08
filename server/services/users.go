@@ -136,8 +136,9 @@ func (U) GetAllMembers(ctx context.Context, searchQuery string, myId int) ([]*Us
 	// get the messages of the two peers
 	var data []*UserDetails
 	cond := ""
+	query := "'%" + html.EscapeString(searchQuery) + "%'"
 	if searchQuery != "" {
-		cond = "AND firstname LIKE '%" + html.EscapeString(searchQuery) + "%'"
+		cond = fmt.Sprintf("AND firstname LIKE %s OR lastname LIKE %s", query, query)
 	}
 	err := pgxscan.Select(ctx, db.Conn(), &data, fmt.Sprintf("SELECT id, firstname, lastname FROM users WHERE id != $1 %s", cond), myId)
 	return data, err

@@ -128,9 +128,9 @@
                 class="
                   flex
                   w-full
-                  border
+                  border-2
                   rounded-xl
-                  focus:outline-none focus:border-indigo-300
+                  focus:outline-none focus:border-blue-500
                   py-2
                   pl-4
                 "
@@ -141,12 +141,16 @@
             <button
               id="sendBtn"
               class="
-                bg-indigo-500
-                hover:bg-indigo-600
-                rounded-full
+                w-full
+                rounded-2xl
+                border-b-4 border-b-blue-600
+                bg-blue-500
+                py-3
+                px-32
+                font-bold
                 text-white
-                px-4
-                py-2
+                hover:bg-blue-400
+                active:translate-y-[0.125rem] active:border-b-blue-400
                 flex-shrink-0
               "
             >
@@ -258,27 +262,6 @@
             sentTo: Number.parseInt(otherPeerId),
           })
         );
-        // messages.insertAdjacentHTML(
-        //   "beforeend",
-        //   `<div class="col-start-6 col-end-13 p-3 rounded-lg">
-        //       <div class="flex items-center justify-start flex-row-reverse">
-        //         <div
-        //           class="
-        //             relative
-        //             mr-3
-        //             text-sm
-        //             bg-indigo-300
-        //             py-2
-        //             px-4
-        //             shadow
-        //             rounded-xl
-        //           "
-        //         >
-        //           <div>${textArea.value}</div>
-        //         </div>
-        //       </div>
-        //     </div>`
-        // );
         textArea.textContent = "";
         textArea.value = "";
       };
