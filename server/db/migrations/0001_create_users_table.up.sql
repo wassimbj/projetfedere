@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS "users" (
     "id" integer DEFAULT nextval('users_id_seq') NOT NULL,
     "firstname" character varying(50) NOT NULL,
     "lastname" character varying(50) NOT NULL,
-    "username" character varying(50) NOT NULL,
+    "username" character varying(50),
     "email" character varying(20) NOT NULL,
     "created_at" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "is_email_confirmed" boolean DEFAULT 'false' NOT NULL,

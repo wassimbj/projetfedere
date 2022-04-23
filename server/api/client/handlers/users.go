@@ -7,6 +7,7 @@ import (
 	"pfserver/config"
 	"pfserver/services"
 	"pfserver/utils"
+	"strconv"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -70,4 +71,18 @@ func (U) Settings(res http.ResponseWriter, req *http.Request) {
 		isSuccess = "false"
 	}
 	http.Redirect(res, req, fmt.Sprintf("/settings?success=%s", isSuccess), http.StatusSeeOther)
+}
+
+func (U) BlockUnBlock(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("-------------------------------------------------------------")
+	userIdToBlock, _ := strconv.Atoi(req.FormValue("userToBlock"))
+	block := req.FormValue("block")
+
+	loggedInUser, _ := config.NewSession(req, res).GetUser()
+	loggedInUserId := loggedInUser["id"].(int64)
+	fmt.Println("userIdToBlock: ", userIdToBlock)
+
+	services.User().ToggleBlockedUser(req.Context(), userIdToBlock, loggedInUserId, block == "true")
+
+	http.Redirect(res, req, fmt.Sprintf("/chat/%d", userIdToBlock), http.StatusSeeOther)
 }

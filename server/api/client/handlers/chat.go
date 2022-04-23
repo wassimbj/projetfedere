@@ -100,6 +100,8 @@ func (C) Messages(res http.ResponseWriter, req *http.Request) {
 	})
 
 	loggedInUser, _ := config.NewSession(req, res).GetUser()
+	isChatBlocked := services.User().IsBlocked(req.Context(), otherPeerId, loggedInUser["id"].(int64))
+	fmt.Println("isChatBlocked:", isChatBlocked)
 
 	messages, err := services.Chat().Get(
 		req.Context(),
@@ -107,22 +109,23 @@ func (C) Messages(res http.ResponseWriter, req *http.Request) {
 		int(loggedInUser["id"].(int64)),
 	)
 
-	fmt.Println("messages: ", messages)
 	if err != nil {
 		chatTmpl.Execute(res, nil)
 		return
 	}
 
 	type ChatData struct {
-		UserId    int
-		Messages  []*services.Message
-		OtherPeer services.UserData
+		UserId        int
+		Messages      []*services.Message
+		IsChatBlocked bool
+		OtherPeer     services.UserData
 	}
 
 	data := ChatData{
-		UserId:    int(loggedInUser["id"].(int64)),
-		Messages:  messages,
-		OtherPeer: otherPeerDetails,
+		UserId:        int(loggedInUser["id"].(int64)),
+		Messages:      messages,
+		IsChatBlocked: isChatBlocked,
+		OtherPeer:     otherPeerDetails,
 	}
 	chatTmpl.Execute(res, data)
 }

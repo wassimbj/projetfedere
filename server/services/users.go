@@ -144,3 +144,37 @@ func (U) GetAllMembers(ctx context.Context, searchQuery string, myId int) ([]*Us
 	return data, err
 
 }
+
+// block = true, we will blocked the user else delete the user from the blocked_users DB table
+func (U) ToggleBlockedUser(ctx context.Context, userId int, blockedBy int64, block bool) error {
+	var err error
+	if block {
+		_, err = db.Conn().Exec(ctx, `
+			INSERT INTO blocked_users(user_blocked, blocked_by) VALUES($1,$2)
+		`, userId, blockedBy)
+	} else {
+		_, err = db.Conn().Exec(ctx, `
+			DELETE FROM blocked_users WHERE user_blocked = $1 AND blocked_by = $2
+		`, userId, blockedBy)
+	}
+
+	return err
+
+}
+
+func (U) IsBlocked(ctx context.Context, userId int, blockedBy int64) bool {
+
+	var blockId int
+	err := db.Conn().QueryRow(
+		ctx,
+		`SELECT id FROM blocked_users WHERE
+		blocked_by = $1 AND user_blocked = $2 OR blocked_by = $2 AND user_blocked = $1`,
+		blockedBy, userId,
+	).Scan(&blockId)
+
+	if err == pgx.ErrNoRows {
+		return false
+	} else {
+		return true
+	}
+}

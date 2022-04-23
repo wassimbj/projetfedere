@@ -81,4 +81,8 @@ func ClientApiRoutes(router *mux.Router) {
 		middlewares.CheckAuth(handlers.Users().Settings, true),
 	).Methods("POST")
 
+	router.HandleFunc(
+		"/api/block",
+		middlewares.CheckAuth(handlers.Users().BlockUnBlock, true),
+	).Methods("POST")
 }
